@@ -1,0 +1,977 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>《見鬼三人行-柳下未盡之言》官方宣傳網站｜不夜工作室</title>
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep-blue: #080d14;
+      --bg-dark-green: #0d1b18;
+      --card-bg: rgba(15, 24, 28, 0.85);
+      --accent-crimson: #9e1b24;
+      --accent-crimson-bright: #d92b38;
+      --text-moonlight: #e6ecea;
+      --text-muted: #8fa39e;
+      --border-subtle: rgba(143, 163, 158, 0.25);
+      --glow-red: 0 0 18px rgba(158, 27, 36, 0.65);
+      --glow-moon: 0 0 20px rgba(230, 236, 234, 0.2);
+    }
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-deep-blue);
+      color: var(--text-moonlight);
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+
+    body {
+      background: radial-gradient(circle at 50% 15%, var(--bg-dark-green) 0%, var(--bg-deep-blue) 75%);
+      overflow-x: hidden;
+      line-height: 1.8;
+      position: relative;
+    }
+
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle, transparent 55%, rgba(3, 6, 10, 0.85) 100%);
+      z-index: 900;
+    }
+
+
+    #ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+
+    /* 導覽列 */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(8, 13, 20, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 100;
+    }
+
+
+    .studio-logo {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.18em;
+      color: var(--text-moonlight);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+
+    .studio-logo span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--accent-crimson);
+      transform: rotate(45deg);
+      box-shadow: var(--glow-red);
+    }
+
+
+    nav {
+      display: flex;
+      gap: 1.8rem;
+    }
+
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+
+
+    nav a:hover {
+      color: var(--text-moonlight);
+      text-shadow: var(--glow-moon);
+    }
+
+
+    .studio-logo-img { width: 46px; height: 46px; object-fit: contain; flex-shrink: 0; }
+    .studio-logo .studio-name { width: auto; height: auto; background: none; transform: none; box-shadow: none; }
+
+    /* 共用區塊容器 */
+    section {
+      position: relative;
+      z-index: 10;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 6.5rem 1.5rem;
+    }
+
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+
+    .section-tag {
+      font-family: 'Noto Serif TC', serif;
+      color: var(--accent-crimson-bright);
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+
+    .section-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: var(--text-moonlight);
+      text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+    }
+
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-crimson), transparent);
+      margin: 1.2rem auto 0;
+    }
+
+
+    /* 1. 主視覺 Hero 區塊 */
+    #hero {
+      min-height: 100vh;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 1.5rem 5rem;
+      position: relative;
+      background: 
+        radial-gradient(circle at 50% 35%, rgba(21, 46, 39, 0.55) 0%, rgba(8, 13, 20, 0.96) 70%);
+    }
+
+
+    .moon-bg {
+      position: absolute;
+      top: 16%;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(230, 236, 234, 0.16) 0%, rgba(230, 236, 234, 0.03) 55%, transparent 75%);
+      box-shadow: 0 0 80px rgba(230, 236, 234, 0.12);
+      pointer-events: none;
+    }
+
+
+    .hero-badge {
+      border: 1px solid rgba(158, 27, 36, 0.6);
+      background: rgba(158, 27, 36, 0.15);
+      color: #f2b8bc;
+      padding: 0.35rem 1.2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      margin-bottom: 1.8rem;
+      border-radius: 2px;
+    }
+
+
+    .game-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(2.3rem, 6vw, 4.4rem);
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      line-height: 1.25;
+      color: var(--text-moonlight);
+      text-shadow: 0 4px 25px rgba(0, 0, 0, 0.9), 0 0 30px rgba(230, 236, 234, 0.15);
+      margin-bottom: 1rem;
+    }
+
+
+    .game-title .sub-part {
+      display: block;
+      font-size: clamp(1.5rem, 3.8vw, 2.6rem);
+      color: #c5d4d0;
+      margin-top: 0.3rem;
+      letter-spacing: 0.22em;
+    }
+
+
+    .hero-subtitle {
+      max-width: 680px;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      margin: 1.5rem auto 2.8rem;
+      font-weight: 400;
+    }
+
+
+    .cta-btn {
+      position: relative;
+      background: linear-gradient(135deg, #7d1119 0%, var(--accent-crimson) 100%);
+      color: var(--text-moonlight);
+      border: 1px solid #d94c56;
+      padding: 1rem 2.8rem;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      box-shadow: var(--glow-red);
+      overflow: hidden;
+    }
+
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--accent-crimson) 0%, #bd222d 100%);
+      box-shadow: 0 0 28px rgba(217, 43, 56, 0.85);
+    }
+
+
+    /* 2. 故事背景區塊 */
+    .story-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      padding: clamp(2rem, 5vw, 3.8rem);
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+    }
+
+
+    .story-container::before, .story-container::after {
+      content: "封";
+      font-family: 'Noto Serif TC', serif;
+      position: absolute;
+      font-size: 0.85rem;
+      color: rgba(158, 27, 36, 0.7);
+      border: 1px solid rgba(158, 27, 36, 0.5);
+      padding: 2px 6px;
+    }
+    .story-container::before { top: 12px; left: 12px; }
+    .story-container::after { bottom: 12px; right: 12px; }
+
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+
+    .story-era {
+      padding: 1.5rem;
+      background: rgba(8, 13, 20, 0.6);
+      border-left: 3px solid var(--accent-crimson);
+    }
+
+
+    .story-era.present {
+      border-left-color: #3a7563;
+    }
+
+
+    .story-era h3 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.9rem;
+      color: var(--text-moonlight);
+      letter-spacing: 0.1em;
+    }
+
+
+    .story-era p {
+      color: #c2cfcc;
+      font-size: 0.98rem;
+      text-align: justify;
+    }
+
+
+    .highlight-red {
+      color: #e86b74;
+      font-weight: 500;
+    }
+
+
+    /* 3. 角色介紹區塊（支援立繪圖片） */
+    .char-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 2.5rem;
+    }
+
+
+    .char-tab {
+      background: rgba(13, 27, 24, 0.7);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 0.75rem 1.5rem;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+
+    .char-tab:hover {
+      border-color: var(--text-moonlight);
+      color: var(--text-moonlight);
+    }
+
+
+    .char-tab.active {
+      background: rgba(158, 27, 36, 0.25);
+      border-color: var(--accent-crimson-bright);
+      color: var(--text-moonlight);
+      box-shadow: var(--glow-red);
+    }
+
+
+    .char-display {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      padding: clamp(1.8rem, 4vw, 3rem);
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      min-height: 400px;
+      animation: fadeIn 0.45s ease;
+    }
+
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+
+    /* 角色立繪框樣式 */
+    .char-portrait {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: linear-gradient(160deg, #132622 0%, #070b10 100%);
+      border: 1px solid rgba(230, 236, 234, 0.25);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+
+    /* 角色立繪圖片本體 */
+    .char-portrait img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* 完整保留人物，不裁切 */
+      object-position: center center; /* 角色圖片已統一畫布與人物高度 */
+      z-index: 2;
+      transition: transform 0.5s ease;
+    }
+
+
+    .char-portrait:hover img {
+      transform: scale(1.03);
+    }
+
+
+    /* 底部漸層遮罩，確保身份標籤文字清晰可見 */
+    .char-portrait::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(7, 11, 16, 0.92) 0%, rgba(7, 11, 16, 0.2) 35%, transparent 65%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+
+    .char-kanji-bg {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 7rem;
+      font-weight: 900;
+      color: rgba(230, 236, 234, 0.06);
+      position: absolute;
+      user-select: none;
+      z-index: 1;
+    }
+
+
+    .char-symbol {
+      font-size: 3.2rem;
+      margin-bottom: 1rem;
+      z-index: 1;
+    }
+
+
+    .char-role-badge {
+      position: absolute;
+      bottom: 1rem;
+      z-index: 4;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      padding: 0.35rem 1rem;
+      border: 1px solid var(--accent-crimson);
+      background: rgba(13, 21, 26, 0.88);
+      color: #f0b6ba;
+      backdrop-filter: blur(4px);
+    }
+
+
+    .char-info h3 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.4rem;
+    }
+
+
+    .char-quote {
+      font-family: 'Noto Serif TC', serif;
+      font-style: italic;
+      color: #a8bdb8;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed var(--border-subtle);
+    }
+
+
+    .char-specs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+
+    .spec-box {
+      background: rgba(8, 13, 20, 0.65);
+      padding: 0.8rem 1rem;
+      border-left: 2px solid #3a7563;
+    }
+
+
+    .spec-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      display: block;
+    }
+
+
+    .spec-val {
+      font-weight: 700;
+      color: var(--text-moonlight);
+      font-size: 1rem;
+    }
+
+
+    .char-desc {
+      color: #cdd9d6;
+      font-size: 0.98rem;
+    }
+
+
+    /* 4. 核心玩法區塊 */
+    .gameplay-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+
+
+    .gameplay-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      padding: 2.2rem 1.8rem;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+    }
+
+
+    .gameplay-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-crimson-bright);
+    }
+
+
+    .gp-num {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: rgba(158, 27, 36, 0.45);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+
+    .gameplay-card h3 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--text-moonlight);
+      letter-spacing: 0.08em;
+    }
+
+
+    .gameplay-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+
+    /* 頁尾 */
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      border-top: 1px solid var(--border-subtle);
+      background: rgba(5, 8, 13, 0.95);
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      letter-spacing: 0.1em;
+    }
+
+
+
+    /* 手機版響應式設計 */
+    @media (max-width: 820px) {
+      nav { display: none; }
+      .story-grid { grid-template-columns: 1fr; }
+      .char-display { grid-template-columns: 1fr; text-align: center; }
+      .char-portrait { max-width: 240px; margin: 0 auto; }
+      .gameplay-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <canvas id="ambient-canvas"></canvas>
+
+
+  <!-- 頂部導覽列 -->
+  <header>
+    <div class="studio-logo"><img src="images/logo.png" alt="不夜工作室 Logo" class="studio-logo-img"><span class="studio-name">不夜工作室</span></div>
+    <nav>
+      <a href="#hero">首頁</a>
+      <a href="#story">故事背景</a>
+      <a href="#characters">登場人物</a>
+      <a href="#npcs">NPC 介紹</a>
+      <a href="#gameplay">核心玩法</a>
+    </nav>
+  </header>
+
+
+  <!-- 1. 主視覺 Hero 區塊 -->
+  <section id="hero">
+    <div class="moon-bg"></div>
+    <div class="hero-badge">校園怪談</div>
+    <h1 class="game-title">
+      《見鬼三人行》
+      <span class="sub-part">－柳下未盡之言－</span>
+    </h1>
+    <p class="hero-subtitle">
+      十五年前的明月國中校園霸凌詛咒，三人三視角揭開柳樹下的血淚真相
+    </p>
+  </section>
+
+
+  <!-- 2. 故事背景區塊 -->
+  <section id="story">
+    <div class="section-header">
+      <span class="section-tag">PROLOGUE</span>
+      <h2 class="section-title">故事背景</h2>
+      <div class="divider"></div>
+    </div>
+
+
+    <div class="story-container">
+      <div class="story-grid">
+        <div class="story-era">
+          <h3>十五年前・明月國中的血色記憶</h3>
+          <p>
+            偏遠山腰村的「明月國中」，曾流傳著一則無人敢提的禁忌。天生擁有陰陽眼的少女<span class="highlight-red">沈晨希</span>，因異於常人的體質長期遭受同儕惡意霸凌，最終在絕望中墜入校園後山的枯井慘死，化為怨氣沖天的厲鬼。暗戀著她的少年<span class="highlight-red">柳月塵</span>，為了保護晨希而意外墜樓身亡，屍骨更被神祕力量封印在操場邊的老柳樹下，從此校園被濃霧與詛咒徹底吞噬。
+          </p>
+        </div>
+
+
+        <div class="story-era present">
+          <h3>十五年後・踏入結界的除靈委託</h3>
+          <p>
+            時光流轉，廢棄已久的明月國中夜半仍會傳出少女的啜泣與柳枝拍打窗戶的聲響。為了平息村中接連發生的怪異事件，<span class="highlight-red">君墨晨、許向陽與林語安</span>受村長重金委託，在月圓之夜踏入充滿怨念的校園結界。三人必須在天亮前拼湊出塵封的真相，解開纏繞在柳樹與枯井之間長達十五年的未盡執念。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 3. 角色介紹區塊 -->
+  <section id="characters">
+    <div class="section-header">
+      <span class="section-tag">CHARACTERS</span>
+      <h2 class="section-title">登場人物</h2>
+      <div class="divider"></div>
+    </div>
+
+
+    <div class="char-tabs" id="char-tabs">
+      <button class="char-tab active" data-char="jun">君墨晨</button>
+      <button class="char-tab" data-char="xu">許向陽</button>
+      <button class="char-tab" data-char="lin">林語安</button>
+      <button class="char-tab" data-char="shen">沈晨希</button>
+    </div>
+
+
+    <div class="char-display" id="char-display">
+      <!-- 由 JavaScript 動態渲染內容 -->
+    </div>
+  </section>
+
+
+  <!-- NPC 介紹：與可操作角色分開 -->
+  <section id="npcs">
+    <div class="section-header">
+      <span class="section-tag">NON-PLAYER CHARACTERS</span>
+      <h2 class="section-title">NPC 介紹</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="char-tabs" id="npc-tabs">
+      <button class="char-tab active" data-npc="liu">柳月塵</button>
+      <button class="char-tab" data-npc="spirit_head">善魂・頭顱型態</button>
+      <button class="char-tab" data-npc="spirit_ghost">善魂・鬼魂型態</button>
+      <button class="char-tab" data-npc="chief">村長</button>
+    </div>
+    <div class="char-display" id="npc-display"></div>
+  </section>
+
+  <!-- 4. 核心玩法區塊 -->
+  <section id="gameplay">
+    <div class="section-header">
+      <span class="section-tag">GAMEPLAY SYSTEM</span>
+      <h2 class="section-title">核心玩法</h2>
+      <div class="divider"></div>
+    </div>
+
+
+    <div class="gameplay-grid">
+      <div class="gameplay-card">
+        <div class="gp-num">01</div>
+        <h3>三主角即時視角切換</h3>
+        <p>
+          探索過程中可隨時切換三位主角的專屬能力：以林語安的「陰陽眼」看穿幻象與隱藏血字、用君墨晨的「道術」破除邪祟結界、藉許向陽的「死神引渡」傾聽校園亡魂的臨終遺言。
+        </p>
+      </div>
+
+
+      <div class="gameplay-card">
+        <div class="gp-num">02</div>
+        <h3>靈異筆記本線索推理</h3>
+        <p>
+          將拾獲的殘破日記、霸凌字條與亡魂證詞收入「靈異筆記本」。透過關聯拼圖與時間軸重組，還原十五年前明月國中事件背後的真兇與完整因果。
+        </p>
+      </div>
+
+
+      <div class="gameplay-card">
+        <div class="gp-num">03</div>
+        <h3>多結局分歧與雙人合葬</h3>
+        <p>
+          玩家的每一次抉擇與線索完整度將決定眾人命運。除了僅能勉強逃離校園的「表結局」外，唯有揭開所有未盡之言，才能達成解開詛咒、讓沈晨希與柳月塵「雙人合葬」的真結局。
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 頁尾 -->
+  <footer>
+    <p>© 2026 不夜工作室 SLEEPLESS STUDIO. ALL RIGHTS RESERVED.</p>
+    <p style="margin-top: 0.4rem; font-size: 0.8rem;">《見鬼三人行-柳下未盡之言》為虛構校園怪談懸疑遊戲，請勿於深夜獨自前往廢棄校園。</p>
+  </footer>
+
+
+
+  <script>
+    // ========================================================
+    // 【自訂角色圖片設定區】
+    // 圖片已放入 images 資料夾，請保持資料夾結構：
+    // 君墨晨: jun.png | 許向陽: xu.png | 林語安: lin.png
+    // 沈晨希: shen.png | 柳月塵: liu.png
+    // (如果您的圖片是 .jpg 格式，只要把下方的 .png 改成 .jpg 即可)
+    // ========================================================
+    const characters = {
+      jun: {
+        name: "君墨晨",
+        image: "images/jun.png",
+        kanji: "道",
+        symbol: "🗡️",
+        role: "高中生道士",
+        quote: "「結界之內，邪祟退散——這把桃木劍會斬斷所有虛妄。」",
+        personality: "勇敢聰明、冷靜果斷",
+        weapon: "桃木劍、鎮魂符咒",
+        specialty: "結界破除與正面驅魔",
+        desc: "出身古老道士世家的高中生，也是三人小隊的行動核心。面對兇殘厲鬼毫不畏懼，擅長分析陣法破綻，以桃木劍與符咒為隊友開闢生路。"
+      },
+      xu: {
+        name: "許向陽",
+        image: "images/xu.png",
+        kanji: "渡",
+        symbol: "🌙",
+        role: "死神候選人",
+        quote: "「別怕，把還沒說出口的話告訴我，我會帶你們離開這裡。」",
+        personality: "開朗樂觀、行動力極強",
+        weapon: "冥界引魂鐮刀",
+        specialty: "與枉死魂魄溝通引渡",
+        desc: "背負著實習任務的死神候選人，性格陽光卻意外地能同理亡者的痛苦。手持漆黑鐮刀，能夠聽見遊蕩在明月國中亡魂的執念並引導其安息。"
+      },
+      lin: {
+        name: "林語安",
+        image: "images/lin.png",
+        kanji: "眼",
+        symbol: "🏹",
+        role: "陰陽眼少女",
+        quote: "「牆壁上的血跡……在指引我們走向後山的枯井。」",
+        personality: "內向細膩、觀察入微",
+        weapon: "破魔長弓與靈矢",
+        specialty: "陰陽眼看穿幻象與隱藏線索",
+        desc: "過去一場神秘火災的唯一倖存者，自那之後便獲得了能窺見彼岸的陰陽眼。雖然話不多，卻總能敏銳察覺環境中的異常幻象，並在遠處以靈矢支援同伴。"
+      },
+      shen: {
+        name: "沈晨希",
+        image: "images/shen.png",
+        kanji: "怨",
+        symbol: "🥀",
+        role: "枯井厲鬼",
+        quote: "「為什麼要這樣對我……我明明只是想好好說出那句話而已……」",
+        personality: "偏執悲傷、怨氣極重",
+        weapon: "井水怨念與黑髮",
+        specialty: "操縱校園詛咒與空間輪迴",
+        desc: "十五年前明月國中的陰陽眼少女。生前因怪異體質飽受欺凌，最終墜入枯井慘死。對霸凌者的恨意與未能向心上人告白的悔恨交織，化為吞噬整座校園的恐怖詛咒。"
+      },
+
+    };
+
+
+    const charDisplay = document.getElementById("char-display");
+    const tabs = document.querySelectorAll(".char-tab");
+
+
+    function renderCharacter(key) {
+      const c = characters[key];
+      charDisplay.style.animation = "none";
+      charDisplay.offsetHeight;
+      charDisplay.style.animation = "fadeIn 0.45s ease";
+
+
+      // onerror="this.style.display='none'" 確保若尚未放入圖片時，會優雅顯示背景文字與符號，不會出現破圖
+      charDisplay.innerHTML = `
+        <div class="char-portrait">
+          <div class="char-kanji-bg">${c.kanji}</div>
+          <div class="char-symbol">${c.symbol}</div>
+          <img src="${c.image}" onerror="this.style.display='none'">
+          <span class="char-role-badge">${c.role}</span>
+        </div>
+        <div class="char-info">
+          <h3>${c.name}</h3>
+          <p class="char-quote">${c.quote}</p>
+          <div class="char-specs">
+            <div class="spec-box">
+              <span class="spec-label">性格特質</span>
+              <span class="spec-val">${c.personality}</span>
+            </div>
+            <div class="spec-box">
+              <span class="spec-label">持有武器</span>
+              <span class="spec-val">${c.weapon}</span>
+            </div>
+            <div class="spec-box">
+              <span class="spec-label">核心專長</span>
+              <span class="spec-val">${c.specialty}</span>
+            </div>
+          </div>
+          <p class="char-desc">${c.desc}</p>
+        </div>
+      `;
+    }
+
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        renderCharacter(tab.dataset.char);
+      });
+    });
+
+
+    renderCharacter("jun");
+
+
+
+
+    // NPC 不列為可操作角色，也不顯示武器或戰鬥能力。
+    const npcs = {
+      liu: {
+        name: "柳月塵", image: "images/liu.png", kanji: "柳", symbol: "🌿",
+        role: "校園亡魂", quote: "「有些話，還沒來得及說出口。」",
+        desc: "與明月國中往事有關的少年亡魂。沒有戰鬥能力，他的故事將隨著探索逐漸揭曉。"
+      },
+      spirit_head: {
+        name: "善魂・頭顱型態", image: "images/spirit_head.png", kanji: "魂", symbol: "👻",
+        role: "善魂・初登場型態", quote: "突然滾到眼前的神祕頭顱",
+        desc: "善魂初次與主角團相遇時，以單獨的頭顱現身，故意嚇唬三人。這只是牠登場時的模樣，並非敵對角色。"
+      },
+      spirit_ghost: {
+        name: "善魂・鬼魂型態", image: "images/spirit_ghost.png", kanji: "魂", symbol: "🕯️",
+        role: "探索支援・商店 NPC", quote: "協助探索，開啟商店",
+        desc: "善魂展現完整的鬼魂姿態後，會協助君墨晨、許向陽與林語安探索校園，同時負責開啟商店，讓玩家在探索途中使用商店功能。"
+      },
+      chief: {
+        name: "村長", image: "images/chief.png", kanji: "村", symbol: "🏮",
+        role: "委託人・村落 NPC", quote: "明月國中事件的委託人",
+        desc: "為了平息村中接連發生的怪異事件，委託主角三人調查明月國中的村長。其他背景設定尚待公開。"
+      }
+    };
+    const npcDisplay = document.getElementById("npc-display");
+    const npcTabs = document.querySelectorAll("#npc-tabs .char-tab");
+    function renderNpc(key) {
+      const n = npcs[key];
+      npcDisplay.style.animation = "none";
+      npcDisplay.offsetHeight;
+      npcDisplay.style.animation = "fadeIn 0.45s ease";
+      npcDisplay.innerHTML = `
+        <div class="char-portrait">
+          <div class="char-kanji-bg">${n.kanji}</div>
+          <div class="char-symbol">${n.symbol}</div>
+          ${n.image ? `<img src="${n.image}" alt="${n.name}" onerror="this.style.display='none'">` : ''}
+          <span class="char-role-badge">${n.role}</span>
+        </div>
+        <div class="char-info">
+          <h3>${n.name}</h3>
+          <p class="char-quote">${n.quote}</p>
+          <p class="char-desc">${n.desc}</p>
+        </div>`;
+    }
+    npcTabs.forEach(tab => tab.addEventListener("click", () => {
+      npcTabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      renderNpc(tab.dataset.npc);
+    }));
+    renderNpc("liu");
+
+    // 背景飄落柳葉與幽微鬼火粒子動畫
+    const canvas = document.getElementById("ambient-canvas");
+    const ctx = canvas.getContext("2d");
+    let width, height, particles;
+
+
+    function initCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      particles = Array.from({ length: 32 }, (_, i) => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 4 + 2,
+        speedX: Math.random() * 0.6 - 0.3,
+        speedY: Math.random() * 0.7 + 0.25,
+        angle: Math.random() * Math.PI * 2,
+        spin: Math.random() * 0.02 - 0.01,
+        isWisp: i % 4 === 0
+      }));
+    }
+
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.x += p.speedX + Math.sin(p.angle) * 0.3;
+        p.y += p.speedY;
+        p.angle += p.spin;
+
+
+        if (p.y > height + 10) {
+          p.y = -10;
+          p.x = Math.random() * width;
+        }
+
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        if (p.isWisp) {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.size * 0.8, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(130, 210, 190, 0.35)";
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "rgba(130, 210, 190, 0.8)";
+          ctx.fill();
+        } else {
+          ctx.rotate(p.angle);
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.size * 2.2, p.size * 0.6, 0, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(45, 82, 68, 0.45)";
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+      requestAnimationFrame(animate);
+    }
+
+
+    window.addEventListener("resize", initCanvas);
+    initCanvas();
+    animate();
+  </script>
+</body>
+</html>
